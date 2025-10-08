@@ -74,6 +74,7 @@
             Padding="5"
            />
         <TextBox
+             x:Name="userNameTextBox"
              FontSize="15"
              HorizontalContentAlignment="Left"
              VerticalContentAlignment="Center"
@@ -81,6 +82,7 @@
              Grid.Column="1"
             />
         <PasswordBox
+          x:Name="userPasswordTextBox1"
           FontSize="15"
           HorizontalContentAlignment="Left"
           VerticalContentAlignment="Center"
@@ -88,6 +90,7 @@
           Grid.Column="1"
          />
         <PasswordBox
+           x:Name="userPasswordTextBox2"
            FontSize="15"
            HorizontalContentAlignment="Left"
            VerticalContentAlignment="Center"
@@ -95,6 +98,7 @@
            Grid.Column="1"
           />
         <TextBox
+          x:Name="userFullNameTextBox"
           FontSize="15"
           HorizontalContentAlignment="Left"
           VerticalContentAlignment="Center"
@@ -102,6 +106,7 @@
           Grid.Column="1"
          />
         <TextBox
+          x:Name="userEmailTextBox"
           FontSize="15"
           HorizontalContentAlignment="Left"
           VerticalContentAlignment="Center"
@@ -119,8 +124,7 @@
                 Width="150"
                 HorizontalContentAlignment="Center"
                 VerticalContentAlignment="Center"
-                
-              
+                Click="regButton_Click"
                 />
         </StackPanel>
     </Grid>

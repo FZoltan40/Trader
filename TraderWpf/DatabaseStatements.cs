@@ -8,23 +8,33 @@ namespace TraderWpf
 
         public object AddNewUser(object user)
         {
-            conn._connection.Open();
+            try
+            {
+                conn._connection.Open();
 
-            string sql = "INSERT INTO `users`(`UserName`, `FullName`, `Password`, `Salt`, `Email`) VALUES (@username,@fullname,@password,@salt,@email)";
+                string sql = "INSERT INTO `users`(`UserName`, `FullName`, `Password`, `Salt`, `Email`) VALUES (@username,@fullname,@password,@salt,@email)";
 
-            MySqlCommand cmd = new MySqlCommand(sql, conn._connection);
+                MySqlCommand cmd = new MySqlCommand(sql, conn._connection);
 
-            cmd.Parameters.AddWithValue("@username", user);
-            cmd.Parameters.AddWithValue("@fullname", user);
-            cmd.Parameters.AddWithValue("@password", user);
-            cmd.Parameters.AddWithValue("@salt", user);
-            cmd.Parameters.AddWithValue("@email", user);
+                var newUser = user.GetType().GetProperties();
 
-            cmd.ExecuteNonQuery();
+                cmd.Parameters.AddWithValue("@username", newUser[0].GetValue(user));
+                cmd.Parameters.AddWithValue("@fullname", newUser[1].GetValue(user));
+                cmd.Parameters.AddWithValue("@password", newUser[2].GetValue(user));
+                cmd.Parameters.AddWithValue("@salt", newUser[3].GetValue(user));
+                cmd.Parameters.AddWithValue("@email", newUser[4].GetValue(user));
 
-            conn._connection.Close();
+                cmd.ExecuteNonQuery();
 
-            return null;
+                conn._connection.Close();
+
+                return new { message = "Sikeres hozzáadás." };
+            }
+            catch (System.Exception ex)
+            {
+                return new { message = ex.Message };
+            }
+
         }
     }
 }
