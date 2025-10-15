@@ -4,17 +4,17 @@
 winexe
 C#
 .cs
-D:\Desktop\12Asztali\Trader\TraderWpf\obj\Debug\
+D:\Desktop\2025_2026\12Asztali\Trader\TraderWpf\obj\Debug\
 TraderWpf
 none
 false
 DEBUG;TRACE
-D:\Desktop\12Asztali\Trader\TraderWpf\App.xaml
-2-1219027403
+D:\Desktop\2025_2026\12Asztali\Trader\TraderWpf\App.xaml
+32122941305
 
-9-1379813504
-332117153648
-MainWindow.xaml;RegisterPage.xaml;
+10-1227272944
+33-1506164854
+LoginPage.xaml;MainWindow.xaml;RegisterPage.xaml;
 
-False
+True
 
