@@ -10,7 +10,7 @@ namespace TraderWpf
         public MainWindow()
         {
             InitializeComponent();
-            StartWindow.Navigate(new LoginPage());
+            StartWindow.Navigate(new LoginPage(this));
         }
     }
 }

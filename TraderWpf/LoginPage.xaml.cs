@@ -8,14 +8,27 @@ namespace TraderWpf
     /// </summary>
     public partial class LoginPage : Page
     {
-        public LoginPage()
+        private readonly DatabaseStatements _databaseStatements = new DatabaseStatements();
+        private readonly MainWindow _mainWindow;
+        public LoginPage(MainWindow mainWindow)
         {
             InitializeComponent();
+            _mainWindow = mainWindow;
         }
 
         private void logButton_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("✔Login");
+            var user = new
+            {
+                Name = userNameTextBox.Text,
+                Pass = userPasswordTextBox1.Password
+            };
+            MessageBox.Show(_databaseStatements.LoginUser(user).ToString());
+        }
+
+        private void regLink_Click(object sender, RoutedEventArgs e)
+        {
+            _mainWindow.StartWindow.Navigate(new RegisterPage(_mainWindow));
         }
     }
 }
