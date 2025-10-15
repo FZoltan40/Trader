@@ -1,4 +1,5 @@
 ﻿using MySql.Data.MySqlClient;
+using System.Data;
 
 namespace TraderWpf
 {
@@ -56,6 +57,25 @@ namespace TraderWpf
 
             conn._connection.Close();
             return isRegistered;
+        }
+
+        public DataView UserList()
+        {
+            conn._connection.Open();
+            string sql = "SELECT * FROM users";
+
+            MySqlCommand cmd = new MySqlCommand(sql, conn._connection);
+
+            MySqlDataAdapter adapter = new MySqlDataAdapter(sql, conn._connection);
+
+            DataTable dt = new DataTable();
+
+            adapter.Fill(dt);
+
+            conn._connection.Close();
+
+            return dt.DefaultView;
+
         }
     }
 }
