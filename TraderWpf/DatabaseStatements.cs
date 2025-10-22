@@ -43,31 +43,37 @@ namespace TraderWpf
 
         }
 
-        public object LoginUser(object user)
+        public bool LoginUser(object user)
         {
             try
             {
                 conn._connection.Open();
 
-                string sql = "SELECT * FROM users WHERE UserName = @username AND Password = @password";
+                string sql = "SELECT * FROM users WHERE UserName = @username;";
 
                 MySqlCommand cmd = new MySqlCommand(sql, conn._connection);
 
                 var logUser = user.GetType().GetProperties();
 
                 cmd.Parameters.AddWithValue("@username", logUser[0].GetValue(user));
-                cmd.Parameters.AddWithValue("@password", logUser[1].GetValue(user));
 
                 MySqlDataReader reader = cmd.ExecuteReader();
 
-                object isRegistered = reader.Read() ? new { message = "Regisztrált" } : new { message = "Nem regisztrált" };
+                if (reader.Read())
+                {
+                    string storedHash = reader.GetString(3);
+                    string storedSalt = reader.GetString(4);
+                    string computeHash = ComputeHmacSha256(logUser[1].GetValue(user).ToString(), storedSalt);
+                    conn._connection.Close();
 
+                    return storedHash == computeHash;
+                }
                 conn._connection.Close();
-                return isRegistered;
+                return false;
             }
-            catch (System.Exception ex)
+            catch
             {
-                return new { message = ex.Message };
+                return false;
             }
 
         }
