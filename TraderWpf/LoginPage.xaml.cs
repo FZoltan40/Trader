@@ -23,7 +23,10 @@ namespace TraderWpf
                 Name = userNameTextBox.Text,
                 Pass = userPasswordTextBox1.Password
             };
-            MessageBox.Show(_databaseStatements.LoginUser(user).ToString());
+            if (_databaseStatements.LoginUser(user))
+                _mainWindow.StartWindow.Navigate(new AdminPage(_mainWindow));
+            else
+                MessageBox.Show("Még nem regisztrált");
         }
 
         private void regLink_Click(object sender, RoutedEventArgs e)
