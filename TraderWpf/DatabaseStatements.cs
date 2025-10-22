@@ -1,5 +1,8 @@
 ﻿using MySql.Data.MySqlClient;
+using System;
 using System.Data;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace TraderWpf
 {
@@ -40,42 +43,77 @@ namespace TraderWpf
 
         public object LoginUser(object user)
         {
-            conn._connection.Open();
+            try
+            {
+                conn._connection.Open();
 
-            string sql = "SELECT * FROM users WHERE UserName = @username AND Password = @password";
+                string sql = "SELECT * FROM users WHERE UserName = @username AND Password = @password";
 
-            MySqlCommand cmd = new MySqlCommand(sql, conn._connection);
+                MySqlCommand cmd = new MySqlCommand(sql, conn._connection);
 
-            var logUser = user.GetType().GetProperties();
+                var logUser = user.GetType().GetProperties();
 
-            cmd.Parameters.AddWithValue("@username", logUser[0].GetValue(user));
-            cmd.Parameters.AddWithValue("@password", logUser[1].GetValue(user));
+                cmd.Parameters.AddWithValue("@username", logUser[0].GetValue(user));
+                cmd.Parameters.AddWithValue("@password", logUser[1].GetValue(user));
 
-            MySqlDataReader reader = cmd.ExecuteReader();
+                MySqlDataReader reader = cmd.ExecuteReader();
 
-            object isRegistered = reader.Read() ? new { message = "Regisztrált" } : new { message = "Nem regisztrált" };
+                object isRegistered = reader.Read() ? new { message = "Regisztrált" } : new { message = "Nem regisztrált" };
 
-            conn._connection.Close();
-            return isRegistered;
+                conn._connection.Close();
+                return isRegistered;
+            }
+            catch (System.Exception ex)
+            {
+                return new { message = ex.Message };
+            }
+
         }
 
         public DataView UserList()
         {
-            conn._connection.Open();
-            string sql = "SELECT * FROM users";
+            try
+            {
+                conn._connection.Open();
+                string sql = "SELECT * FROM users";
 
-            MySqlCommand cmd = new MySqlCommand(sql, conn._connection);
+                MySqlCommand cmd = new MySqlCommand(sql, conn._connection);
 
-            MySqlDataAdapter adapter = new MySqlDataAdapter(sql, conn._connection);
+                MySqlDataAdapter adapter = new MySqlDataAdapter(sql, conn._connection);
 
-            DataTable dt = new DataTable();
+                DataTable dt = new DataTable();
 
-            adapter.Fill(dt);
+                adapter.Fill(dt);
 
-            conn._connection.Close();
+                conn._connection.Close();
 
-            return dt.DefaultView;
+                return dt.DefaultView;
+            }
+            catch (System.Exception ex)
+            {
+                return null;
+            }
+        }
 
+        public string GenerateSalt()
+        {
+            byte[] salt = new byte[16];
+
+            using (var rnd = RandomNumberGenerator.Create())
+            {
+                rnd.GetBytes(salt);
+            }
+
+            return Convert.ToBase64String(salt);
+        }
+
+        public string ComputeHmacSha256(string password, string salt)
+        {
+            using (var hmac = new HMACSHA256(Encoding.UTF8.GetBytes(salt)))
+            {
+                byte[] hash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
+                return Convert.ToBase64String(hash);
+            }
         }
     }
 }
