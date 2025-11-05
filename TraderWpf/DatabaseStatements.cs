@@ -103,6 +103,34 @@ namespace TraderWpf
             }
         }
 
+        public object DeleteUser(object id)
+        {
+            try
+            {
+                conn._connection.Open();
+
+                string sql = "DELETE FROM users WHERE Id = @id";
+
+                MySqlCommand cmd = new MySqlCommand(sql,conn._connection);
+
+                var idObj = id.GetType().GetProperties();
+
+                cmd.Parameters.AddWithValue("@id", idObj[0].GetValue(id));
+
+                cmd.ExecuteNonQuery();
+
+                conn._connection.Close();    
+                return new { message = "Sikeres törlés." };
+            }
+            catch (Exception ex)
+            {
+
+                return new { message = ex.Message };
+            }
+
+           
+        }
+
         public string GenerateSalt()
         {
             byte[] salt = new byte[16];

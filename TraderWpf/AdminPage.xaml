@@ -9,8 +9,17 @@
       Title="AdminPage">
 
     <Grid Margin="50">
-        <DataGrid
-            x:Name="userDataGrid"
-            />
+
+        <StackPanel>
+            <DataGrid
+    x:Name="userDataGrid"
+    />
+        </StackPanel>
+       
+        
+        <StackPanel Margin="100">
+            <TextBox x:Name="idTextBox"/>
+            <Button Content="Töröl" Click="Button_Click"/>
+        </StackPanel>
     </Grid>
 </Page>
