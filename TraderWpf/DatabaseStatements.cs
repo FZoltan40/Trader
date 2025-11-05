@@ -83,7 +83,7 @@ namespace TraderWpf
             try
             {
                 conn._connection.Open();
-                string sql = "SELECT `UserName`,`FullName`,`Email`,`RegTime`,`Password` FROM `users` ";
+                string sql = "SELECT `UserName`,`FullName`,`Email`,`RegDate` FROM `users` ";
 
                 MySqlCommand cmd = new MySqlCommand(sql, conn._connection);
 
